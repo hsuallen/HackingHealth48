@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
             posts = api.getAllPosts(api.openConnection(api.makeQuery(api.GET_ALL)));
 
-
             Log.i(ACTIVITY_NAME, "query made");
             return null;
         }
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         posts = new ArrayList<>();
         adapter = new FeedAdapter(this);
 
