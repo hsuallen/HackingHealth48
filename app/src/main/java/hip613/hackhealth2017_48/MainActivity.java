@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     final private String[] pics = new String[]{"http://res.cloudinary.com/allenhsu/image/upload/v1493474450/cup.jpg",
             "http://res.cloudinary.com/allenhsu/image/upload/v1493474450/juice.jpg"};
 
-    protected ArrayList<FeedPost> posts;
+    protected ArrayList<Post> posts;
     protected int pos;
     protected ListView feed;
     protected TextView welcomeMsg, desc;
@@ -36,42 +36,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected class FeedAdapter extends ArrayAdapter<FeedPost> {
+    protected class FeedAdapter extends ArrayAdapter<Post> {
         public FeedAdapter(Context ctx) { super(ctx, 0); }
 
         public int getCount() { return posts.size(); }
-        public FeedPost getItem(int pos) { return posts.get(pos); }
+        public Post getItem(int pos) { return posts.get(pos); }
         public View getView(int pos, View convertView, ViewGroup Parent) {
             LayoutInflater inflater = MainActivity.this.getLayoutInflater();
 
             int layout = R.layout.row_feed;
             View result = inflater.inflate(layout, null);
 
-            ImageView image = (ImageView)result.findViewById(R.id.feed_image);
-            TextView title = (TextView)result.findViewById(R.id.feed_title);
-            TextView likes = (TextView)result.findViewById(R.id.feed_likes);
-
-            image.setImageResource(getItem(pos).getImageID());
-            title.setText(getItem(pos).getTitle());
-            likes.setText(getItem(pos).getLikes());
+//            ImageView image = (ImageView)result.findViewById(R.id.feed_image);
+//            TextView title = (TextView)result.findViewById(R.id.feed_title);
+//            TextView likes = (TextView)result.findViewById(R.id.feed_likes);
+//
+//            image.setImageResource(getItem(pos).getImageID());
+//            title.setText(getItem(pos).getTitle());
+//            likes.setText(getItem(pos).getLikes());
 
             return result;
         }
-    }
-
-    private class FeedPost {
-        int imageID, likes;
-        String title;
-
-        FeedPost(int imageID, int likes, String title) {
-            this.imageID = imageID;
-            this.likes = likes;
-            this.title = title;
-        }
-
-        public int getImageID() { return imageID; }
-        public int getLikes() { return likes; }
-        public String getTitle() { return title; }
     }
 
     @Override
