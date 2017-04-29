@@ -1,23 +1,28 @@
 package hip613.hackhealth2017_48;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     final private String actionBarTitle = "Earth is Green!";
     final private String[] pics = new String[]{"http://res.cloudinary.com/allenhsu/image/upload/v1493474450/cup.jpg",
             "http://res.cloudinary.com/allenhsu/image/upload/v1493474450/juice.jpg"};
 
-    protected TextView welcomeMsg, desc;
+    protected ArrayList<FeedPost> posts;
     protected ListView feed;
+    protected TextView welcomeMsg, desc;
 
-    class FeedFetcher extends AsyncTask<String, Integer, String> {
+    protected class FeedFetcher extends AsyncTask<String, Integer, String> {
         protected String doInBackground(String ...args) {
             return null;
         }
@@ -26,6 +31,25 @@ public class MainActivity extends AppCompatActivity {
             setVisibility(View.VISIBLE);
             hideErnie();
         }
+    }
+
+    protected class FeedAdapter extends ArrayAdapter<FeedPost> {
+        public FeedAdapter(Context ctx) { super(ctx, 0); }
+    }
+
+    private class FeedPost {
+        int imageID, likes;
+        String title;
+
+        FeedPost(int imageID, int likes, String title) {
+            this.imageID = imageID;
+            this.likes = likes;
+            this.title = title;
+        }
+
+        public int getImageID() { return imageID; }
+        public int getLikes() { return likes; }
+        public String getTitle() { return title; }
     }
 
     @Override
@@ -39,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         desc = (TextView)findViewById(R.id.textView2);
         feed = (ListView)findViewById(R.id.feed);
 
-        setVisibility(View.INVISIBLE);
+//        setVisibility(View.INVISIBLE);
     }
 
     private void hideErnie() {
