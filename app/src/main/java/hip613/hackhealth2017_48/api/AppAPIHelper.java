@@ -174,40 +174,47 @@ public class AppAPIHelper {
 
     //makeFoodArray(JsonReader reader) takes a JsonReader and reads food arrays from the JSON
     // and returns an ArrayList<Food>
-    public ArrayList<Post> makePostArray(JsonReader reader) throws IOException {
+    public ArrayList<Post> getAllPosts(HttpURLConnection conn)  {
         ArrayList<Post> posts = new ArrayList<>();
-        reader.beginArray();
-        while(reader.hasNext()){
-            posts.add(readPost(reader));
-        }
-        reader.endArray();
-
-        return posts;
-    }
-
-    //searchFood(HttpURLConnection conn) takes in a HttpURLConnection and queries the API
-    // for JSON results
-    public ArrayList<Post> getAllPosts(HttpURLConnection conn) {
-        ArrayList<Post> posts = null;
         JsonReader reader;
-        String name = "";
 
         try {
             reader = new JsonReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            reader.beginObject();
-            while (reader.hasNext()) {
-                name = reader.nextName();
-                if(name.equals("foods")){
-                    posts = makePostArray(reader);
-                }else{
-                    reader.skipValue();
-                }
+            reader.beginArray();
+            while(reader.hasNext()){
+                posts.add(readPost(reader));
             }
-            reader.endObject();
+            reader.endArray();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return posts;
     }
+
+    //searchFood(HttpURLConnection conn) takes in a HttpURLConnection and queries the API
+    // for JSON results
+//    public ArrayList<Post> getAllPosts(HttpURLConnection conn) {
+//        ArrayList<Post> posts = null;
+//        JsonReader reader;
+//        String name = "";
+//
+//        try {
+//            reader = new JsonReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+//            reader.beginArray();
+//            reader.beginObject();
+//            while (reader.hasNext()) {
+//                name = reader.nextName();
+//                if(name.equals("foods")){
+//                    posts = makePostArray(reader);
+//                }else{
+//                    reader.skipValue();
+//                }
+//            }
+//            reader.endArray();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return posts;
+//    }
 
 }
