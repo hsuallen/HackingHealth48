@@ -55,10 +55,11 @@ public class Post {
             return jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
 
     }
+
 
     public String getDescription() {
         return description;
