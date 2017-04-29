@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +19,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import hip613.hackhealth2017_48.api.AppAPIHelper;
 import hip613.hackhealth2017_48.models.Post;
 
 public class MainActivity extends AppCompatActivity {
+    final private String ACTIVITY_NAME="MainActivity";
     final private String actionBarTitle = "Earth is Green!";
     final private String[] pics = new String[]{"http://res.cloudinary.com/allenhsu/image/upload/v1493474450/cup.jpg",
             "http://res.cloudinary.com/allenhsu/image/upload/v1493474450/juice.jpg"};
@@ -29,14 +32,23 @@ public class MainActivity extends AppCompatActivity {
     protected int pos;
     protected ListView feed;
     protected TextView welcomeMsg, desc;
+    private FeedAdapter adapter;
 
     protected class FeedFetcher extends AsyncTask<String, Integer, String> {
         protected String doInBackground(String ...args) {
+
+            AppAPIHelper api = new AppAPIHelper();
+
+            posts = api.getAllPosts(api.openConnection(api.makeQuery(api.GET_ALL)));
+
+
+            Log.i(ACTIVITY_NAME, "query made");
             return null;
         }
 
         protected void onPostExecute(String s) {
             setVisibility(View.VISIBLE);
+            adapter.notifyDataSetChanged();
             hideErnie();
         }
     }
@@ -52,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
             int layout = R.layout.row_feed;
             View result = inflater.inflate(layout, null);
 
-//            ImageView image = (ImageView)result.findViewById(R.id.feed_image);
-//            TextView title = (TextView)result.findViewById(R.id.feed_title);
-//            TextView likes = (TextView)result.findViewById(R.id.feed_likes);
-//
-//            image.setImageResource(getItem(pos).getImageID());
-//            title.setText(getItem(pos).getTitle());
-//            likes.setText(getItem(pos).getLikes());
+            //ImageView image = (ImageView)result.findViewById(R.id.feed_image);
+            TextView title = (TextView)result.findViewById(R.id.feed_title);
+            TextView likes = (TextView)result.findViewById(R.id.feed_likes);
+
+            //image.setImageResource(getItem(pos).getImageID());
+            title.setText(getItem(pos).getTitle());
+            likes.setText(String.valueOf(getItem(pos).getUpvotes()));
 
             return result;
         }
@@ -68,15 +80,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        posts = new ArrayList<>();
+        adapter = new FeedAdapter(this);
 
         getSupportActionBar().setTitle(actionBarTitle);
 
         welcomeMsg = (TextView)findViewById(R.id.textView);
         desc = (TextView)findViewById(R.id.textView2);
         feed = (ListView)findViewById(R.id.feed);
+        feed.setAdapter(adapter);
 
-//        setVisibility(View.INVISIBLE);
-        hideErnie();
+        setVisibility(View.INVISIBLE);
+
+        FeedFetcher async = new FeedFetcher();
+        async.execute();
+
     }
 
     @Override
