@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hip613.hackhealth2017_48.FragmentTransaction">
+    tools:context="hip613.hackhealth2017_48.FragTransaction">
 
     <FrameLayout
         android:id="@+id/frameLayout"
