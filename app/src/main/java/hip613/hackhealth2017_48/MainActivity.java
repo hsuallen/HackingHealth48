@@ -1,10 +1,13 @@
 package hip613.hackhealth2017_48;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -74,6 +77,24 @@ public class MainActivity extends AppCompatActivity {
 
 //        setVisibility(View.INVISIBLE);
         hideErnie();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu m) {
+        getMenuInflater().inflate(R.menu.main_menu, m);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        int id = mi.getItemId();
+
+        switch (id) {
+            case R.id.post:
+                startActivity(new Intent(MainActivity.this, PostActivity.class));
+        }
+
+        return true;
     }
 
     private void hideErnie() {
