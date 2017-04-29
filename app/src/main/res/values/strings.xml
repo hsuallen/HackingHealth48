@@ -4,4 +4,18 @@
     <!-- Fetch Activity -->
     <string name="fetching">Fetching posts...</string>
     <string name="apiError">Oops something went wrong…</string>
+
+    <!-- Post Activity -->
+    <string name="title">Title</string>
+    <string name="enter_title">Enter a title</string>
+    <string name="category">Category</string>
+    <string name="choose_category">Choose a category</string>
+    <string-array name="categories">
+        <item>Cafeteria</item>
+        <item>Janitorial Supplies</item>
+        <item>Medical Supplies</item>
+        <item>Office Supplies</item>
+    </string-array>
+    <string name="description">Description</string>
+    <string name="enter_description">Enter a description</string>
 </resources>
