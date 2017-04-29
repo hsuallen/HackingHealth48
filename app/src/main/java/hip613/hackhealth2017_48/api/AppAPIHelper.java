@@ -88,7 +88,7 @@ public class AppAPIHelper {
         OutputStream os = conn.getOutputStream();
         BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(os, "UTF-8"));
-        writer.write(post.toJSONString());
+        writer.write(post.toJSON());
 
         writer.flush();
         writer.close();
