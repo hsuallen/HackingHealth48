@@ -3,12 +3,9 @@ package hip613.hackhealth2017_48.api;
 import android.util.JsonReader;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -29,11 +26,11 @@ public class AppAPIHelper {
     //ACTIVITY_NAME for debugging, queryURL is the URL for the API
     private final String ACTIVITY_NAME = "AppAPIHelper";
     private final String BASE = "https://aqueous-beach-97404.herokuapp.com/";
-    private final String NEW_POST = "api/posts/newPost";
-    private final String GET_ALL = "api/posts/getAll";
-    private final String UPVOTE = "api/posts/upvote";
-    private final String REMOVE = "api/posts/removePost";
-    private final String GET_BY_ID = "api/posts/getByID";
+    public final String NEW_POST = "api/posts/newPost";
+    public final String GET_ALL = "api/posts/getAll";
+    public final String UPVOTE = "api/posts/upvote";
+    public final String REMOVE = "api/posts/removePost";
+    public final String GET_BY_ID = "api/posts/getByID";
     //post field names
     private final String ID = "id";
     private final String TITLE = "title";
@@ -42,6 +39,7 @@ public class AppAPIHelper {
     private final String DESCRIPTION = "description";
     private final String CREATED_AT = "createdAt";
     private final String COMMENTS = "comments";
+    private final String UPVOTES = "upvotes";
 
     //constructor
     public AppAPIHelper(){
@@ -161,7 +159,7 @@ public class AppAPIHelper {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            } else if(field.equals(UPVOTE)){
+            } else if(field.equals(UPVOTES)){
                 upvotes = reader.nextInt();
             } else if(field.equals(COMMENTS)){
                 comments = makeCommentsArray(reader);
@@ -189,7 +187,7 @@ public class AppAPIHelper {
 
     //searchFood(HttpURLConnection conn) takes in a HttpURLConnection and queries the API
     // for JSON results
-    public ArrayList<Post> searchFood(HttpURLConnection conn) {
+    public ArrayList<Post> getAllPosts(HttpURLConnection conn) {
         ArrayList<Post> posts = null;
         JsonReader reader;
         String name = "";
