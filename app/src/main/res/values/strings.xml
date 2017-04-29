@@ -4,6 +4,8 @@
     <!-- Fetch Activity -->
     <string name="fetching">Fetching posts...</string>
     <string name="apiError">Oops something went wrong…</string>
+    <string name="welcome">Welcome!</string>
+    <string name="pick_item">Pick an item to view the details.</string>
 
     <!-- Post Activity -->
     <string name="title">Title</string>
