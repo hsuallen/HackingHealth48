@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">HackHealth2017_#48</string>
+
+    <!-- Fetch Activity -->
+    <string name="fetching">Fetching posts...</string>
+</resources>
