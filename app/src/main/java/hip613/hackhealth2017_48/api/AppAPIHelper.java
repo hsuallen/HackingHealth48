@@ -1,11 +1,17 @@
 package hip613.hackhealth2017_48.api;
 
+import android.content.Context;
 import android.util.JsonReader;
 import android.util.Log;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.Utils;
+import com.cloudinary.utils.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -26,11 +32,13 @@ public class AppAPIHelper {
     //ACTIVITY_NAME for debugging, queryURL is the URL for the API
     private final String ACTIVITY_NAME = "AppAPIHelper";
     private final String BASE = "https://aqueous-beach-97404.herokuapp.com/";
+    private final String CLOUDBASE = "http://res.cloudinary.com/allenhsu/image/upload/";
     public final String NEW_POST = "api/posts/newPost";
     public final String GET_ALL = "api/posts/getAll";
     public final String UPVOTE = "api/posts/upvote";
     public final String REMOVE = "api/posts/removePost";
     public final String GET_BY_ID = "api/posts/getByID";
+    public final String JPG = ".jpg";
     //post field names
     private final String ID = "id";
     private final String TITLE = "title";
@@ -174,7 +182,7 @@ public class AppAPIHelper {
 
     //makeFoodArray(JsonReader reader) takes a JsonReader and reads food arrays from the JSON
     // and returns an ArrayList<Food>
-    public ArrayList<Post> getAllPosts(HttpURLConnection conn)  {
+    public ArrayList<Post> getAllPosts( HttpURLConnection conn)  {
         ArrayList<Post> posts = new ArrayList<>();
         JsonReader reader;
 
@@ -189,6 +197,17 @@ public class AppAPIHelper {
             e.printStackTrace();
         }
         return posts;
+    }
+
+    //post image to cloudinary get back string url to store in db
+    public String postToCloudinary(Context ctx, Post post, InputStream in) throws IOException {
+        String id = post.getId();
+        Cloudinary cloudinary = new Cloudinary(Utils.cloudinaryUrlFromContext(ctx));
+        cloudinary.uploader().upload(in, ObjectUtils.emptyMap());
+        cloudinary.url().generate(id);
+
+
+        return CLOUDBASE + id + JPG;
     }
 
     //searchFood(HttpURLConnection conn) takes in a HttpURLConnection and queries the API
