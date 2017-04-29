@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
             "http://res.cloudinary.com/allenhsu/image/upload/v1493474450/juice.jpg"};
 
     protected ArrayList<FeedPost> posts;
+    protected int pos;
     protected ListView feed;
     protected TextView welcomeMsg, desc;
 
@@ -35,6 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
     protected class FeedAdapter extends ArrayAdapter<FeedPost> {
         public FeedAdapter(Context ctx) { super(ctx, 0); }
+
+        public int getCount() { return posts.size(); }
+        public FeedPost getItem(int pos) { return posts.get(pos); }
+        public View getView(int pos, View convertView, ViewGroup Parent) {
+            LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+
+            int layout = R.layout.row_feed;
+            View result = inflater.inflate(layout, null);
+
+            ImageView image = (ImageView)result.findViewById(R.id.feed_image);
+            TextView title = (TextView)result.findViewById(R.id.feed_title);
+            TextView likes = (TextView)result.findViewById(R.id.feed_likes);
+
+            image.setImageResource(getItem(pos).getImageID());
+            title.setText(getItem(pos).getTitle());
+            likes.setText(getItem(pos).getLikes());
+
+            return result;
+        }
     }
 
     private class FeedPost {
@@ -64,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         feed = (ListView)findViewById(R.id.feed);
 
 //        setVisibility(View.INVISIBLE);
+
     }
 
     private void hideErnie() {
