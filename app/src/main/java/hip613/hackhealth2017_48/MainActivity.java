@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import hip613.hackhealth2017_48.models.Post;
+
 public class MainActivity extends AppCompatActivity {
     final private String actionBarTitle = "Earth is Green!";
     final private String[] pics = new String[]{"http://res.cloudinary.com/allenhsu/image/upload/v1493474450/cup.jpg",
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         feed = (ListView)findViewById(R.id.feed);
 
 //        setVisibility(View.INVISIBLE);
-
+        hideErnie();
     }
 
     private void hideErnie() {
