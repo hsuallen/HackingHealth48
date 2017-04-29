@@ -3,6 +3,7 @@
 
     <!-- Fetch Activity -->
     <string name="fetching">Fetching posts...</string>
+    <string name="apiError">Oops something went wrong…</string>
 
     <!-- Post Activity -->
     <string name="title">Title</string>
