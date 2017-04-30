@@ -62,7 +62,7 @@ class HTTPUtils {
 public class MainActivity extends AppCompatActivity {
     final private String ACTIVITY_NAME="MainActivity";
     final private String actionBarLoading = "Loading Posts...";
-    final private String actionBarTitle = "Earth is Green!";
+    final private String actionBarTitle = "Ernie";
 
     public static ArrayList<Bitmap> feedImages = new ArrayList<>();
     public static int pos;
@@ -88,7 +88,12 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
+
+            welcomeMsg.setText(R.string.welcome);
+            welcomeMsg.setTextSize(20);
+
             getSupportActionBar().setTitle(actionBarTitle);
+            getSupportActionBar().show();
             hideErnie();
         }
     }
@@ -148,14 +153,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         posts = new ArrayList<>();
         adapter = new FeedAdapter(this);
 
         getSupportActionBar().setTitle(actionBarLoading);
+        getSupportActionBar().hide();
 
         welcomeMsg = (TextView)findViewById(R.id.textView);
+        welcomeMsg.setTextSize(40);
         desc = (TextView)findViewById(R.id.textView2);
         feed = (ListView)findViewById(R.id.feed);
         feed.setAdapter(adapter);
@@ -227,8 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setVisibility(int visibility) {
         swipe.setVisibility(visibility);
-        welcomeMsg.setVisibility(visibility);
-        desc.setVisibility(visibility);
         feed.setVisibility(visibility);
     }
 }
