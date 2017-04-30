@@ -73,8 +73,9 @@ public class DetailsFragment extends Fragment {
             Post post = new Post(title, category, URL, description);
             post.setUpvotes(upvotes);
             post.setId(id);
-
-            return api.postUpvote(post);
+            String response = api.postUpvote(post);
+            upvotes++;
+            return response;
         }
 
         @Override
