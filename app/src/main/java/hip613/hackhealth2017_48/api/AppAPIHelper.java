@@ -10,6 +10,8 @@ import com.cloudinary.utils.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -38,7 +41,7 @@ public class AppAPIHelper {
     public final String UPVOTE = "api/posts/upvote";
     public final String REMOVE = "api/posts/removePost";
     public final String GET_BY_ID = "api/posts/getByID";
-    public final String JPG = ".jpg";
+    public final String PNG = ".png";
     //post field names
     private final String ID = "id";
     private final String TITLE = "title";
@@ -48,6 +51,8 @@ public class AppAPIHelper {
     private final String CREATED_AT = "createdAt";
     private final String COMMENTS = "comments";
     private final String UPVOTES = "upvotes";
+
+    private HttpURLConnection conn;
 
     //constructor
     public AppAPIHelper(){
@@ -69,7 +74,7 @@ public class AppAPIHelper {
             e.printStackTrace();
         }
 
-        HttpURLConnection conn = null;
+        conn = null;
         try {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Accept-Encoding", "");
@@ -84,29 +89,53 @@ public class AppAPIHelper {
         return conn;
     }
 
-    public String postPost(HttpURLConnection conn, Post post){
-        String response = "";
+    public void close(){
+        if (conn != null){
+            conn.disconnect();
+        }
+    }
 
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
+    public String postPost(Post post){
+        String response = "";
+        String query = makeQuery(NEW_POST);
+
+        HttpURLConnection connection = null;
+
+        URL url = null;
+
+        try {
+            url = new URL(query);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setReadTimeout(100000);
+            conn.setConnectTimeout(150000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.connect();
+        } catch (IOException e) {
+            Log.e(ACTIVITY_NAME, "Error with URL connection");
+        }
 
         try{
-        OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(os, "UTF-8"));
-        writer.write(post.toJSON());
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            wr.writeBytes(post.toJSON());
+            wr.flush();
+            wr.close();
 
-        writer.flush();
-        writer.close();
-        os.close();
-        int responseCode=conn.getResponseCode();
+            int responseCode=conn.getResponseCode();
 
-        if (responseCode == HttpsURLConnection.HTTP_OK) {
-            String line;
-            BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            while ((line=br.readLine()) != null) {
-                response+=line;
-            }
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
         }
         else {
             response = "Oops something went wrong…";
@@ -115,7 +144,7 @@ public class AppAPIHelper {
     } catch (Exception e) {
         e.printStackTrace();
     }
-
+    Log.i(ACTIVITY_NAME, response);
     return response;
     }
 
@@ -200,40 +229,17 @@ public class AppAPIHelper {
     }
 
     //post image to cloudinary get back string url to store in db
-    public String postToCloudinary(Context ctx, Post post, InputStream in) throws IOException {
-        String id = post.getId();
+    public String postToCloudinary(Context ctx, File photo) throws IOException {
+        Log.i(ACTIVITY_NAME, photo.getName());
         Cloudinary cloudinary = new Cloudinary(Utils.cloudinaryUrlFromContext(ctx));
-        cloudinary.uploader().upload(in, ObjectUtils.emptyMap());
-        cloudinary.url().generate(id);
+        String getURL = cloudinary.uploader().upload(photo.getAbsolutePath(), ObjectUtils.emptyMap()).get("secure_url").toString();
+        cloudinary.url().generate(photo.getName());
 
-
-        return CLOUDBASE + id + JPG;
+        Log.i(ACTIVITY_NAME, getURL);
+        Log.i(ACTIVITY_NAME, "AFTER CLOUDINARY");
+        return getURL;
     }
 
-    //searchFood(HttpURLConnection conn) takes in a HttpURLConnection and queries the API
-    // for JSON results
-//    public ArrayList<Post> getAllPosts(HttpURLConnection conn) {
-//        ArrayList<Post> posts = null;
-//        JsonReader reader;
-//        String name = "";
-//
-//        try {
-//            reader = new JsonReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-//            reader.beginArray();
-//            reader.beginObject();
-//            while (reader.hasNext()) {
-//                name = reader.nextName();
-//                if(name.equals("foods")){
-//                    posts = makePostArray(reader);
-//                }else{
-//                    reader.skipValue();
-//                }
-//            }
-//            reader.endArray();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return posts;
-//    }
+
 
 }

@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://123456789012345:abcdeghijklmnopqrstuvwxyz12@n07t21i7"/>
+        <meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://372212291784748:V_7g1Iv6KrK3x9e-TJ4niGtwbG4@allenhsu"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
