@@ -2,6 +2,8 @@ package hip613.hackhealth2017_48;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +20,42 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import hip613.hackhealth2017_48.api.AppAPIHelper;
 import hip613.hackhealth2017_48.models.Post;
+
+class HTTPUtils {
+    public static Bitmap getImage(URL url) {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                return BitmapFactory.decodeStream(connection.getInputStream());
+            } else
+                return null;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+    public static Bitmap getImage(String urlString) {
+        try {
+            URL url = new URL(urlString);
+            return getImage(url);
+        } catch (MalformedURLException e) {
+            return null;
+        }
+    }
+}
 
 public class MainActivity extends AppCompatActivity {
     final private String ACTIVITY_NAME="MainActivity";
@@ -67,20 +101,14 @@ public class MainActivity extends AppCompatActivity {
             int layout = R.layout.row_feed;
             View result = inflater.inflate(layout, null);
 
-            //ImageView image = (ImageView)result.findViewById(R.id.feed_image);
-            final ImageView like = (ImageView)result.findViewById(R.id.like);
+            ImageView image = (ImageView)result.findViewById(R.id.feed_image);
             TextView title = (TextView)result.findViewById(R.id.feed_title);
             TextView likes = (TextView)result.findViewById(R.id.feed_likes);
 
-            //image.setImageResource(getItem(pos).getImageID());
+            Log.i(ACTIVITY_NAME, getItem(pos).getPhotoURL());
+            image.setImageBitmap(HTTPUtils.getImage(getItem(pos).getPhotoURL()));
             title.setText(getItem(pos).getTitle());
             likes.setText(String.valueOf(getItem(pos).getUpvotes()));
-
-            like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
 
             return result;
         }
