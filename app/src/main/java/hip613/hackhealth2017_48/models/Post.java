@@ -20,8 +20,8 @@ public class Post {
     ArrayList<String> comments;
 
     //this constuctor is used when creating new posts
-    public Post(String title, String category, String photoURL, String description, Date createdAt) {
-       this("", title, category, photoURL, description, 0, createdAt, new ArrayList<String>());
+    public Post(String title, String category, String photoURL, String description) {
+       this("", title, category, photoURL, description, 0, null, new ArrayList<String>());
     }
 
     //this constructor is used when fetching posts from the db
@@ -41,17 +41,17 @@ public class Post {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
+
+
         JSONObject jsonObject= new JSONObject();
         try {
-            jsonObject.put("id", getId());
             jsonObject.put("title", getTitle());
             jsonObject.put("category", getCategory());
             jsonObject.put("photo", getPhotoURL());
             jsonObject.put("description", getDescription());
             jsonObject.put("upvotes", getUpvotes());
-            jsonObject.put("createdAt", df.format(getCreatedAt()).toString());
+            jsonObject.put("comments", getComments());
 
-            Log.i("APIHELPER", jsonObject.toString());
             return jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();
