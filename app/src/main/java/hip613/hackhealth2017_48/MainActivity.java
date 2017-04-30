@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView feed;
     private TextView welcomeMsg, desc;
     private FeedAdapter adapter;
+    private SwipeRefreshLayout swipe;
 
     protected class FeedFetcher extends AsyncTask<String, Integer, String> {
         protected String doInBackground(String ...args) {
@@ -146,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         posts = new ArrayList<>();
         adapter = new FeedAdapter(this);
 
@@ -172,6 +176,16 @@ public class MainActivity extends AppCompatActivity {
 
                     startActivityForResult(intent, 5);
                 }
+            }
+        });
+
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FeedFetcher refresh = new FeedFetcher();
+                refresh.execute();
+                swipe.setRefreshing(false);
             }
         });
 
@@ -210,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setVisibility(int visibility) {
+        swipe.setVisibility(visibility);
         welcomeMsg.setVisibility(visibility);
         desc.setVisibility(visibility);
         feed.setVisibility(visibility);
