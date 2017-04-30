@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class PostActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private File photoFile;
     private Post post;
+    private ProgressBar progressBar;
     private Spinner categoryField;
     private EditText titleField, descriptionField;
 
@@ -109,6 +112,7 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
 
         getSupportActionBar().setTitle("Create a New Post");
+
 
         titleField = (EditText)findViewById(R.id.editText2);
         descriptionField = (EditText)findViewById(R.id.editText3);
@@ -195,7 +199,7 @@ public class PostActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(getBaseContext(), response , Toast.LENGTH_SHORT); //this is the ListActivity
             toast.show();
 
-
+            finish();
         }
     }
 
@@ -203,7 +207,6 @@ public class PostActivity extends AppCompatActivity {
 
         CloudinaryPost cp = new CloudinaryPost();
         cp.execute();
-        finish();
 
     }
 }

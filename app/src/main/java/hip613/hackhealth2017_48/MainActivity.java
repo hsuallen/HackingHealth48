@@ -45,6 +45,110 @@ public class MainActivity extends AppCompatActivity {
     private FeedAdapter adapter;
     private SwipeRefreshLayout swipe;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        posts = new ArrayList<>();
+        adapter = new FeedAdapter(this);
+
+        getSupportActionBar().setTitle(actionBarLoading);
+        getSupportActionBar().hide();
+
+        welcomeMsg = (TextView)findViewById(R.id.textView);
+        welcomeMsg.setTextSize(40);
+        desc = (TextView)findViewById(R.id.textView2);
+        feed = (ListView)findViewById(R.id.feed);
+        feed.setAdapter(adapter);
+
+        feed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pos = position;
+
+                if (isTablet) {
+                } else {
+                    Intent intent = new Intent(MainActivity.this, FragTransaction.class);
+                    Log.i(ACTIVITY_NAME, "Why is this null" + posts.get(pos).getId());
+                    intent.putExtra("id", posts.get(pos).getId());
+                    intent.putExtra("title", posts.get(pos).getTitle());
+                    intent.putExtra("upvotes", posts.get(pos).getUpvotes());
+                    intent.putExtra("category", posts.get(pos).getCategory());
+                    intent.putExtra("description", posts.get(pos).getDescription());
+                    intent.putExtra("imageURL", posts.get(pos).getPhotoURL());
+
+                    startActivityForResult(intent, 5);
+                }
+            }
+        });
+
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                feedImages = new ArrayList<>();
+                FeedFetcher refresh = new FeedFetcher();
+                refresh.execute();
+                swipe.setRefreshing(false);
+            }
+        });
+
+        setVisibility(View.INVISIBLE);
+
+        FeedFetcher async = new FeedFetcher();
+        async.execute();
+
+        isTablet = (findViewById(R.id.frameLayout) != null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        FeedFetcher fetcher = new FeedFetcher();
+        fetcher.execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu m) {
+        getMenuInflater().inflate(R.menu.main_menu, m);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        int id = mi.getItemId();
+
+        switch (id) {
+            case R.id.post:
+                startActivityForResult(new Intent(MainActivity.this, PostActivity.class), 5);
+                break;
+            case R.id.profile:
+                startActivityForResult(new Intent(MainActivity.this, Profile.class), 5);
+                break;
+            case R.id.settings:
+                break;
+            case R.id.logout:
+                break;
+        }
+
+        return true;
+    }
+
+    private void hideErnie() {
+        ImageView ernie = (ImageView)findViewById(R.id.ernie);
+        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+
+        ernie.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void setVisibility(int visibility) {
+        swipe.setVisibility(visibility);
+        feed.setVisibility(visibility);
+    }
+
     protected class FeedFetcher extends AsyncTask<String, Integer, String> {
         protected String doInBackground(String ...args) {
 
@@ -117,101 +221,5 @@ public class MainActivity extends AppCompatActivity {
 
             return result;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        posts = new ArrayList<>();
-        adapter = new FeedAdapter(this);
-
-        getSupportActionBar().setTitle(actionBarLoading);
-        getSupportActionBar().hide();
-
-        welcomeMsg = (TextView)findViewById(R.id.textView);
-        welcomeMsg.setTextSize(40);
-        desc = (TextView)findViewById(R.id.textView2);
-        feed = (ListView)findViewById(R.id.feed);
-        feed.setAdapter(adapter);
-
-        feed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pos = position;
-
-                if (isTablet) {
-                } else {
-                    Intent intent = new Intent(MainActivity.this, FragTransaction.class);
-                    Log.i(ACTIVITY_NAME, "Why is this null" + posts.get(pos).getId());
-                    intent.putExtra("id", posts.get(pos).getId());
-                    intent.putExtra("title", posts.get(pos).getTitle());
-                    intent.putExtra("upvotes", posts.get(pos).getUpvotes());
-                    intent.putExtra("category", posts.get(pos).getCategory());
-                    intent.putExtra("description", posts.get(pos).getDescription());
-                    intent.putExtra("imageURL", posts.get(pos).getPhotoURL());
-
-                    startActivityForResult(intent, 5);
-                }
-            }
-        });
-
-        swipe = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                feedImages = new ArrayList<>();
-                FeedFetcher refresh = new FeedFetcher();
-                refresh.execute();
-                swipe.setRefreshing(false);
-            }
-        });
-
-        setVisibility(View.INVISIBLE);
-
-        FeedFetcher async = new FeedFetcher();
-        async.execute();
-
-        isTablet = (findViewById(R.id.frameLayout) != null);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu m) {
-        getMenuInflater().inflate(R.menu.main_menu, m);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem mi) {
-        int id = mi.getItemId();
-
-        switch (id) {
-            case R.id.post:
-                startActivity(new Intent(MainActivity.this, PostActivity.class));
-                break;
-            case R.id.profile:
-                startActivity(new Intent(MainActivity.this, Profile.class));
-                break;
-            case R.id.settings:
-                break;
-            case R.id.logout:
-                break;
-        }
-
-        return true;
-    }
-
-    private void hideErnie() {
-        ImageView ernie = (ImageView)findViewById(R.id.ernie);
-        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-
-        ernie.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
-    }
-
-    private void setVisibility(int visibility) {
-        swipe.setVisibility(visibility);
-        feed.setVisibility(visibility);
     }
 }

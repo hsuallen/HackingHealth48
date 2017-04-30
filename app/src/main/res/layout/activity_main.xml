@@ -11,9 +11,8 @@
         android:id="@+id/ernie"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/ernie4"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/ernie4_trans" />
 
     <ProgressBar
         android:id="@+id/progressBar"
