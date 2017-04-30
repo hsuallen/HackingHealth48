@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -61,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
     final private String ACTIVITY_NAME="MainActivity";
     final private String actionBarLoading = "Loading Posts...";
     final private String actionBarTitle = "Earth is Green!";
-    final private String[] pics = new String[]{"http://res.cloudinary.com/allenhsu/image/upload/v1493474450/cup.jpg",
-            "http://res.cloudinary.com/allenhsu/image/upload/v1493474450/juice.jpg"};
 
     private ArrayList<Post> posts;
     private boolean isTablet;
@@ -105,8 +104,14 @@ public class MainActivity extends AppCompatActivity {
             TextView title = (TextView)result.findViewById(R.id.feed_title);
             TextView likes = (TextView)result.findViewById(R.id.feed_likes);
 
-            Log.i(ACTIVITY_NAME, getItem(pos).getPhotoURL());
-            image.setImageBitmap(HTTPUtils.getImage(getItem(pos).getPhotoURL()));
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(getItem(pos).getPhotoURL()).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            image.setImageBitmap(mIcon11);
             title.setText(getItem(pos).getTitle());
             likes.setText(String.valueOf(getItem(pos).getUpvotes()));
 
@@ -141,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("likes", posts.get(pos).getUpvotes());
                     intent.putExtra("category", posts.get(pos).getCategory());
                     intent.putExtra("description", posts.get(pos).getDescription());
+                    intent.putExtra("imageURL", posts.get(pos).getPhotoURL());
 
                     startActivityForResult(intent, 5);
                 }
