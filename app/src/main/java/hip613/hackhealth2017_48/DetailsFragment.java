@@ -24,7 +24,7 @@ public class DetailsFragment extends Fragment {
         super.onCreate(bundle);
         Bundle bun = getArguments();
 
-        upvotes = bun.getInt("likes");
+        upvotes = bun.getInt("upvotes");
         title = bun.getString("title");
         category = bun.getString("category");
         description = bun.getString("description");
@@ -40,7 +40,7 @@ public class DetailsFragment extends Fragment {
         categoryTV = (TextView)gui.findViewById(R.id.textView9);
         descTV = (TextView)gui.findViewById(R.id.textView11);
 
-        image.setImageBitmap(HTTPUtils.getImage("http://res.cloudinary.com/allenhsu/image/upload/v1493508293/igmkahqqvmh09c3abj58.png"));
+        image.setImageBitmap(MainActivity.feedImages.get(MainActivity.pos));
         titleTV.setText(title);
         categoryTV.setText(category);
         descTV.setText(description);

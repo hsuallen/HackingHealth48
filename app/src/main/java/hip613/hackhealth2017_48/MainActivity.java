@@ -63,9 +63,11 @@ public class MainActivity extends AppCompatActivity {
     final private String actionBarLoading = "Loading Posts...";
     final private String actionBarTitle = "Earth is Green!";
 
+    public static ArrayList<Bitmap> feedImages = new ArrayList<>();
+    public static int pos;
+
     private ArrayList<Post> posts;
     private boolean isTablet;
-    private int pos;
     private ListView feed;
     private TextView welcomeMsg, desc;
     private FeedAdapter adapter;
@@ -106,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
+
+            feedImages.add(mIcon11);
             return mIcon11;
         }
 
@@ -161,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(MainActivity.this, FragTransaction.class);
                     intent.putExtra("title", posts.get(pos).getTitle());
-                    intent.putExtra("likes", posts.get(pos).getUpvotes());
+                    intent.putExtra("upvotes", posts.get(pos).getUpvotes());
                     intent.putExtra("category", posts.get(pos).getCategory());
                     intent.putExtra("description", posts.get(pos).getDescription());
                     intent.putExtra("imageURL", posts.get(pos).getPhotoURL());
