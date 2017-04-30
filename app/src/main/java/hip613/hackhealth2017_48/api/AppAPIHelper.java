@@ -43,7 +43,7 @@ public class AppAPIHelper {
     public final String GET_BY_ID = "api/posts/getByID";
     public final String PNG = ".png";
     //post field names
-    private final String ID = "id";
+    private final String ID = "_id";
     private final String TITLE = "title";
     private final String CATEGORY = "category";
     private final String PHOTO = "photo";
@@ -124,18 +124,14 @@ public class AppAPIHelper {
 
         try{
             DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-            wr.writeBytes(post.toJSON());
+            wr.writeBytes(post.toJSON().toString());
             wr.flush();
             wr.close();
 
             int responseCode=conn.getResponseCode();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
-                }
+                response = "Posted!";
         }
         else {
             response = "Oops something went wrong…";
@@ -238,6 +234,68 @@ public class AppAPIHelper {
         Log.i(ACTIVITY_NAME, getURL);
         Log.i(ACTIVITY_NAME, "AFTER CLOUDINARY");
         return getURL;
+    }
+
+    public String postUpvote(Post post){
+
+        String response = "";
+        String query = makeQuery(UPVOTE);
+        query = query + "/" + post.getId();
+
+        Log.i(ACTIVITY_NAME, "Post id " + post.getId());
+        Log.i(ACTIVITY_NAME, query);
+
+        HttpURLConnection connection = null;
+
+        URL url = null;
+
+        try {
+            url = new URL(query);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setReadTimeout(100000);
+            conn.setConnectTimeout(150000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.connect();
+        } catch (IOException e) {
+            Log.e(ACTIVITY_NAME, "Error with URL connection");
+        }
+
+        try{
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            Log.i(ACTIVITY_NAME, post.toJSON().get("upvotes").toString());
+            String votes = post.toJSON().get("upvotes").toString();
+
+            String upvote = "{\"upvotes\":\""+votes+"\"}";
+
+            Log.i(ACTIVITY_NAME, upvote);
+
+            wr.writeBytes(upvote);
+            wr.flush();
+            wr.close();
+
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                response = "Liked!";
+            }
+            else {
+                response = "Oops something went wrong…";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i(ACTIVITY_NAME, response);
+        return response;
+
     }
 
 
