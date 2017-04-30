@@ -1,5 +1,7 @@
 package hip613.hackhealth2017_48.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -37,7 +39,7 @@ public class Post {
     }
 
     //makes a JSON of the object
-    public String toJSON(){
+    public JSONObject toJSON(){
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
@@ -52,7 +54,7 @@ public class Post {
             jsonObject.put("upvotes", getUpvotes());
             jsonObject.put("comments", getComments());
 
-            return jsonObject.toString();
+            return jsonObject;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -124,4 +126,5 @@ public class Post {
     public void setUpvotes(int upvotes) {
         this.upvotes = upvotes;
     }
+
 }

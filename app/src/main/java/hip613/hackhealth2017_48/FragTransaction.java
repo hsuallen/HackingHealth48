@@ -4,11 +4,15 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import hip613.hackhealth2017_48.models.Post;
+
 /**
  * Created by allenhsu on 2017-04-29.
  */
 
 public class FragTransaction extends AppCompatActivity {
+    private Post post;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

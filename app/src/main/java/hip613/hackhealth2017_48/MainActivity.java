@@ -168,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
                 if (isTablet) {
                 } else {
                     Intent intent = new Intent(MainActivity.this, FragTransaction.class);
+                    Log.i(ACTIVITY_NAME, "Why is this null" + posts.get(pos).getId());
+                    intent.putExtra("id", posts.get(pos).getId());
                     intent.putExtra("title", posts.get(pos).getTitle());
                     intent.putExtra("upvotes", posts.get(pos).getUpvotes());
                     intent.putExtra("category", posts.get(pos).getCategory());
