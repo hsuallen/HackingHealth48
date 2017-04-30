@@ -23,6 +23,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Random;
 
@@ -221,7 +223,17 @@ public class AppAPIHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Collections.sort(posts, sortByUpvotes());
         return posts;
+    }
+
+    private Comparator<Post> sortByUpvotes() {
+        return new Comparator<Post>() {
+            @Override
+            public int compare(Post o1, Post o2) {
+                return o2.getUpvotes() - o1.getUpvotes();
+            }
+        }  ;
     }
 
     //post image to cloudinary get back string url to store in db
