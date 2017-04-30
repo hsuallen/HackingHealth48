@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:orientation="vertical"
+    tools:context="hip613.hackhealth2017_48.Profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="James Thibaudeau"
+                android:textColor="#333"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:layout_weight="1"
+                android:text="Level 5: 187 points" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="242dp"
+            android:layout_height="250dp"
+            android:paddingBottom="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            app:srcCompat="@drawable/james" />
+
+        <TextView
+            android:id="@+id/occupation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Occupation" />
+
+        <TextView
+            android:id="@+id/occupationFill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="Professional Scientist"
+            android:textSize="18dp"
+            android:textColor="#444"/>
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Location" />
+
+        <TextView
+            android:id="@+id/locationFill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="Ottawa, Ontario"
+            android:textSize="18dp"
+            android:textColor="#444"/>
+
+        <TextView
+            android:id="@+id/aboutMe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="About Me" />
+
+        <TextView
+            android:id="@+id/aboutMeFill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="My name is James Thibaudeau, I am a professional scientist."
+            android:textSize="18dp"
+            android:textColor="#444"/>
+    </LinearLayout>
+</ScrollView>
