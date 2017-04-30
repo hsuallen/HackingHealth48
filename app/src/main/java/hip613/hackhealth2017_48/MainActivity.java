@@ -30,35 +30,6 @@ import java.util.ArrayList;
 import hip613.hackhealth2017_48.api.AppAPIHelper;
 import hip613.hackhealth2017_48.models.Post;
 
-class HTTPUtils {
-    public static Bitmap getImage(URL url) {
-        HttpURLConnection connection = null;
-        try {
-            connection = (HttpURLConnection) url.openConnection();
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                return BitmapFactory.decodeStream(connection.getInputStream());
-            } else
-                return null;
-        } catch (Exception e) {
-            return null;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-    public static Bitmap getImage(String urlString) {
-        try {
-            URL url = new URL(urlString);
-            return getImage(url);
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
-}
-
 public class MainActivity extends AppCompatActivity {
     final private String ACTIVITY_NAME="MainActivity";
     final private String actionBarLoading = "Loading Posts...";
@@ -190,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                feedImages = new ArrayList<>();
                 FeedFetcher refresh = new FeedFetcher();
                 refresh.execute();
                 swipe.setRefreshing(false);
