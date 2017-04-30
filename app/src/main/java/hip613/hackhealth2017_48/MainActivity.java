@@ -89,6 +89,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
     protected class FeedAdapter extends ArrayAdapter<Post> {
         public FeedAdapter(Context ctx) { super(ctx, 0); }
 
@@ -104,14 +129,7 @@ public class MainActivity extends AppCompatActivity {
             TextView title = (TextView)result.findViewById(R.id.feed_title);
             TextView likes = (TextView)result.findViewById(R.id.feed_likes);
 
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(getItem(pos).getPhotoURL()).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            image.setImageBitmap(mIcon11);
+            new DownloadImageTask(image).execute(getItem(pos).getPhotoURL());
             title.setText(getItem(pos).getTitle());
             likes.setText(String.valueOf(getItem(pos).getUpvotes()));
 
