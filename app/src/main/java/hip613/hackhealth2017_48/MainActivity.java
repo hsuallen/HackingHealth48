@@ -217,6 +217,14 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.post:
                 startActivity(new Intent(MainActivity.this, PostActivity.class));
+                break;
+            case R.id.profile:
+                startActivity(new Intent(MainActivity.this, Profile.class));
+                break;
+            case R.id.settings:
+                break;
+            case R.id.logout:
+                break;
         }
 
         return true;

@@ -11,5 +11,19 @@
         android:icon="@drawable/profile_icon"
         android:orderInCategory="200"
         app:showAsAction="always">
+        <menu>
+            <item android:id="@+id/profile"
+                android:title="Profile"
+                android:icon="@drawable/user"
+                android:orderInCategory="100"/>
+            <item android:id="@+id/settings"
+                android:title="Settings"
+                android:icon="@drawable/settings"
+                android:orderInCategory="200"/>
+            <item android:id="@+id/logout"
+                android:title="Logout"
+                android:icon="@drawable/exit"
+                android:orderInCategory="300"/>
+        </menu>
     </item>
 </menu>

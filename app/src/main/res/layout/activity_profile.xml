@@ -27,13 +27,6 @@
                 android:textColor="#333"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:layout_weight="1"
-                android:text="Level 5: 187 points" />
         </LinearLayout>
 
         <ImageView
@@ -82,15 +75,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="About Me" />
+            android:text="Points" />
 
         <TextView
             android:id="@+id/aboutMeFill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:text="My name is James Thibaudeau, I am a professional scientist."
-            android:textSize="18dp"
-            android:textColor="#444"/>
+            android:text="Level 5: 187 points"
+            android:textColor="#444"
+            android:textSize="18dp" />
     </LinearLayout>
 </ScrollView>
